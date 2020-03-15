@@ -1,11 +1,9 @@
 astroid==2.3.3
 colorama==0.4.3
-happy==0.0.1
 isort==4.3.21
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
 packaging==20.3
-pybind11==2.4.3
 pylint==2.4.4
 pyparsing==2.4.6
 six==1.14.0
