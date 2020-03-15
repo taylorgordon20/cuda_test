@@ -1,5 +1,6 @@
+#include <vector>
+
 #include "errors.hpp"
-#include "happy.hpp"
 
 namespace happy {
 

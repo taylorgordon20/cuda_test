@@ -9,10 +9,17 @@ project(
   LANGUAGES CXX
 )
 
-# Flags controlling what we build.
-set(BUILD_PYTHON_EXTENSION ON CACHE BOOL "Whether to build the happy CPython extension")
+#== BUILD OPTIONS ==#
 
-# Check whether CUDA is supported and if so enable the appropriate build declarations.
+# User options controlling what we build.
+option(HAPPY_ENABLE_PYTHON "Whether to build the happy CPython extension" ON)
+
+#== BUILD VARIABLES ==#
+
+# Path to the public include directory.
+set(HAPPY_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+
+# Check whether CUDA is supported and if so enable the appropriate build settings.
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
   message(STATUS "CUDA support found. Building library with CUDA bindings.")
@@ -21,6 +28,8 @@ else()
   message(STATUS "No CUDA support found. Building library without CUDA bindings.")
 endif()
 
+#== BUILD TARGETS ==#
+
 # Add third-party dependencies.
 add_subdirectory(third_party)
 
@@ -28,5 +37,8 @@ add_subdirectory(third_party)
 add_subdirectory(src)
 
 # Add python extension targets.
-add_subdirectory(py)
-install(TARGETS happy_ext LIBRARY DESTINATION happy)
+if(HAPPY_ENABLE_PYTHON)
+  add_subdirectory(python)
+endif()
+
+#== BUILD TESTS ==#

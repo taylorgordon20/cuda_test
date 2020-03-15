@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "happy.hpp"
+#include <happy/happy.hpp>
 
 PYBIND11_MODULE(happy, m) {
   m.doc() = "Dummy module for adding vectors";
