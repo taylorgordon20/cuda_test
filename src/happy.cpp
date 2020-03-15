@@ -1,8 +1,5 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-
-#include "errors.hpp"
 #include "happy.hpp"
+#include "errors.hpp"
 
 namespace happy {
 

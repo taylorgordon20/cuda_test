@@ -1,6 +1,3 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-
 #include "errors.hpp"
 #include "happy.hpp"
 
@@ -21,7 +18,7 @@ std::vector<int> add_gpu(
   int* d_b = nullptr;
   int* d_c = nullptr;
 
-  size_t n = a.size();
+  size_t n = v1.size();
   size_t alloc_size = sizeof(int) * n;
   std::vector<int> ret(n);
 
@@ -29,14 +26,14 @@ std::vector<int> add_gpu(
   cudaMalloc(&d_b, alloc_size);
   cudaMalloc(&d_c, alloc_size);
 
-  cudaMemcpy(d_a, v1, alloc_size, cudaMemcpyHostToDevice);
-  cudaMemcpy(d_b, v2, alloc_size, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_a, v1.data(), alloc_size, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_b, v2.data(), alloc_size, cudaMemcpyHostToDevice);
 
   constexpr size_t kBlockSize = 256;
   size_t grid_size = 1 + (n - 1) / kBlockSize;
   add_kernel<<<grid_size, kBlockSize>>>(d_a, d_b, d_c, n);
 
-  cudaMemcpy(ret, d_c, alloc_size, cudaMemcpyDeviceToHost);
+  cudaMemcpy(ret.data(), d_c, alloc_size, cudaMemcpyDeviceToHost);
 
   cudaFree(d_a);
   cudaFree(d_b);

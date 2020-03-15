@@ -6,5 +6,7 @@
 PYBIND11_MODULE(happy, m) {
   m.doc() = "Dummy module for adding vectors";
   m.def("add_cpu", &happy::add_cpu, "A function which adds two vectors on CPU");
+#ifdef WITH_CUDA
   m.def("add_gpu", &happy::add_gpu, "A function which adds two vectors on GPU");
+#endif
 }
