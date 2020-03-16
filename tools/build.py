@@ -36,7 +36,6 @@ def generate():
           "..",
       ],
       cwd = BUILD_DIR,
-      shell = True,
       check = True,
       stdout = sys.stdout,
       stderr = sys.stderr,
@@ -48,7 +47,6 @@ def build(config):
   subprocess.run(
       ["cmake", "--build", ".", "--config", config],
       cwd = BUILD_DIR,
-      shell = True,
       check = True,
       stdout = sys.stdout,
       stderr = sys.stderr,
@@ -60,7 +58,6 @@ def test(config):
   subprocess.run(
       ["ctest", "-C", config],
       cwd = BUILD_DIR,
-      shell = True,
       check = True,
       stdout = sys.stdout,
       stderr = sys.stderr,

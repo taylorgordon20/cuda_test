@@ -4,12 +4,14 @@ cmake_minimum_required(VERSION 3.16)
 add_library(happy_cpu_lib STATIC happy_cpu.cpp errors.hpp)
 target_include_directories(happy_cpu_lib PUBLIC "${HAPPY_INCLUDE_DIR}")
 target_compile_features(happy_cpu_lib PUBLIC cxx_std_14)
+set_target_properties(happy_cpu_lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Add the happy library GPU target
 if(CMAKE_CUDA_COMPILER)
   add_library(happy_gpu_lib STATIC happy_gpu.cu errors.hpp)
   target_include_directories(happy_gpu_lib PUBLIC "${HAPPY_INCLUDE_DIR}")
   target_compile_features(happy_gpu_lib PUBLIC cxx_std_14)
+  set_target_properties(happy_cpu_lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
 
 # For convience, build a library with both CPU and GPU targets.
