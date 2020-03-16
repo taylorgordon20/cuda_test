@@ -3,3 +3,4 @@
 build
 dist
 happy.egg-info
+demos/.ipynb_checkpoints
