@@ -1,4 +1,5 @@
 import os
+import platform
 import subprocess
 import sys
 
@@ -31,7 +32,7 @@ def generate():
           "cmake",
           "-DPYTHON_EXECUTABLE=" + sys.executable,
           "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + OUTPUT_DIR,
-          "-Ax64",
+          "-Ax64" if platform.system() == "Windows" else "",
           "..",
       ],
       cwd = BUILD_DIR,

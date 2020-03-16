@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 # Add the happy Python extension target.
 add_library(happy_ext MODULE happy_ext.cpp)
 target_compile_features(happy_ext PUBLIC cxx_std_14)
-target_compile_definitions(happy_ext PRIVATE $<$<BOOL:CMAKE_CUDA_COMPILER>:WITH_CUDA>)
+if(CMAKE_CUDA_COMPILER)
+  target_compile_definitions(happy_ext PRIVATE WITH_CUDA>)
+endif()
 
 # Link to dependencies.
 target_link_libraries(happy_ext PRIVATE pybind11::module happy_lib)
