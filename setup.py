@@ -1,17 +1,10 @@
-import colorama
 import glob
 import os
-import termcolor
 import sys
 import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-
-
-def log(msg, **kwargs):
-  colorama.init()
-  termcolor.cprint(msg, "green", **kwargs)
 
 
 class CMakeExtension(Extension):
@@ -48,7 +41,7 @@ class CMakeBuild(build_ext):
     config = "Debug" if self.debug else "Release"
 
     # Run CMake generation.
-    log("Generating cmake build...")
+    print("Generating cmake build...")
     os.makedirs(self.build_temp, exist_ok = True)
     subprocess.check_call(
         args = [
@@ -64,7 +57,7 @@ class CMakeBuild(build_ext):
     )
 
     # Run CMake build.
-    log("Executing cmake build...")
+    print("Executing cmake build...")
     subprocess.check_call(
         args = ["cmake", "--build", ".", "--config", config],
         cwd = self.build_temp,

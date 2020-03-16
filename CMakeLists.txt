@@ -20,7 +20,7 @@ option(HAPPY_ENABLE_PYTHON "Whether to build the happy CPython extension" ON)
 set(HAPPY_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
 # Check whether CUDA is supported and if so enable the appropriate build settings.
-#check_language(CUDA)
+check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
   message(STATUS "CUDA support found. Building library with CUDA bindings.")
   enable_language(CUDA)

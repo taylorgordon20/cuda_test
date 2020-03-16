@@ -4,10 +4,17 @@
 A demo python extension using CUDA
 
 ## To install as a Python extension
-```pip install .```
+```bash
+> pip install .
+```
 
 ## To build and run tests
-```python tools/build.py```
+```bash
+> python -m venv .venv/
+> source .venv/Scripts/activate
+> pip install -e requirements.txt
+> python tools/build.py
+```
 
 ## System requirements
 1. Python >=3.6 
