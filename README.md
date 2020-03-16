@@ -10,6 +10,7 @@ A demo python extension using CUDA
 ```python tools/build.py```
 
 ## System requirements
-1. C++ compiler toolchain
-2. CMake
-3. CUDA toolkit (optional)
+1. Python >=3.6 
+2. C++ compiler toolchain
+3. CMake
+4. CUDA toolkit (optional)
