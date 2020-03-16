@@ -15,37 +15,61 @@ def log(msg, **kwargs):
   termcolor.cprint(msg, "green", **kwargs)
 
 
-# Enable color logging.
-colorama.init()
+def init():
+  # Enable color logging.
+  colorama.init()
 
-# Create build directory.
-log("Creating build into: " + BUILD_DIR)
-os.makedirs(BUILD_DIR, exist_ok = True)
+  # Create build directory.
+  log("Creating build into: " + BUILD_DIR)
+  os.makedirs(BUILD_DIR, exist_ok = True)
 
-# Run cmake from the build directory.
-log("Generating build...")
-subprocess.run(
-    args = [
-        "cmake",
-        "-DPYTHON_EXECUTABLE=" + sys.executable,
-        "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + OUTPUT_DIR,
-        "-Ax64",
-        "..",
-    ],
-    cwd = BUILD_DIR,
-    shell = True,
-    check = True,
-    stdout = sys.stdout,
-    stderr = sys.stderr,
-)
 
-# Run cmake from the build directory.
-log("Executing build...")
-subprocess.run(
-    ["cmake", "--build", "."],
-    cwd = BUILD_DIR,
-    shell = True,
-    check = True,
-    stdout = sys.stdout,
-    stderr = sys.stderr,
-)
+def generate():
+  log("Generating build...")
+  subprocess.run(
+      args = [
+          "cmake",
+          "-DPYTHON_EXECUTABLE=" + sys.executable,
+          "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + OUTPUT_DIR,
+          "-Ax64",
+          "..",
+      ],
+      cwd = BUILD_DIR,
+      shell = True,
+      check = True,
+      stdout = sys.stdout,
+      stderr = sys.stderr,
+  )
+
+
+def build(config):
+  log(f"Executing {config} build...")
+  subprocess.run(
+      ["cmake", "--build", ".", "--config", config],
+      cwd = BUILD_DIR,
+      shell = True,
+      check = True,
+      stdout = sys.stdout,
+      stderr = sys.stderr,
+  )
+
+
+def test(config):
+  log(f"Executing {config} tests...")
+  subprocess.run(
+      ["ctest", "-C", config],
+      cwd = BUILD_DIR,
+      shell = True,
+      check = True,
+      stdout = sys.stdout,
+      stderr = sys.stderr,
+  )
+
+
+if __name__ == "__main__":
+  init()
+  generate()
+  build("Debug")
+  build("Release")
+  test("Debug")
+  test("Release")

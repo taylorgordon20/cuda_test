@@ -42,3 +42,9 @@ if(HAPPY_ENABLE_PYTHON)
 endif()
 
 #== BUILD TESTS ==#
+
+# Add our unit tests.
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
