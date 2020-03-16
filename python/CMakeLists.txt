@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 add_library(happy_ext MODULE happy_ext.cpp)
 target_compile_features(happy_ext PUBLIC cxx_std_14)
 if(CMAKE_CUDA_COMPILER)
-  target_compile_definitions(happy_ext PRIVATE WITH_CUDA>)
+  target_compile_definitions(happy_ext PRIVATE WITH_CUDA)
 endif()
 
 # Link to dependencies.
