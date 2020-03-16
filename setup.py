@@ -1,10 +1,18 @@
 import glob
 import os
+import platform
 import sys
 import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
+
+
+def platform_args(common_args = [], windows_args = [], posix_args = []):
+  if platform.system() == "Windows":
+    return common_args + windows_args
+  else:
+    return common_args + posix_args
 
 
 class CMakeExtension(Extension):
@@ -44,14 +52,21 @@ class CMakeBuild(build_ext):
     print("Generating cmake build...")
     os.makedirs(self.build_temp, exist_ok = True)
     subprocess.check_call(
-        args = [
-            "cmake",
-            ext.root_dir,
-            f"-DPYTHON_EXECUTABLE={sys.executable}",
-            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={output_dir}",
-            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{config.upper()}={output_dir}",
-            "-Ax64",
-        ],
+        args = platform_args(
+            common_args = [
+                "cmake",
+                ext.root_dir,
+                f"-DPYTHON_EXECUTABLE={sys.executable}",
+                f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={output_dir}",
+            ],
+            windows_args = [
+                "-Ax64",
+                f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{config.upper()}={output_dir}",
+            ],
+            posix_args = [
+                f"-DCMAKE_BUILD_TYPE={config}",
+            ]
+        ),
         cwd = self.build_temp,
         env = env,
     )

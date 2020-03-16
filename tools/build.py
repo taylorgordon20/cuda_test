@@ -25,16 +25,31 @@ def init():
   os.makedirs(BUILD_DIR, exist_ok = True)
 
 
-def generate():
-  log("Generating build...")
+def platform_args(common_args = [], windows_args = [], posix_args = []):
+  if platform.system() == "Windows":
+    return common_args + windows_args
+  else:
+    return common_args + posix_args
+
+
+def generate(config):
+  log(f"Generating {config} build...")
   subprocess.run(
-      args = [
-          "cmake",
-          "-DPYTHON_EXECUTABLE=" + sys.executable,
-          "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + OUTPUT_DIR,
-          "-Ax64" if platform.system() == "Windows" else "",
-          "..",
-      ],
+      args = platform_args(
+          common_args = [
+              "cmake",
+              ROOT_DIR,
+              f"-DPYTHON_EXECUTABLE={sys.executable}",
+              f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={OUTPUT_DIR}",
+          ],
+          windows_args = [
+              "-Ax64",
+              f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{config.upper()}={OUTPUT_DIR}",
+          ],
+          posix_args = [
+              f"-DCMAKE_BUILD_TYPE={config}",
+          ]
+      ),
       cwd = BUILD_DIR,
       check = True,
       stdout = sys.stdout,
@@ -66,7 +81,8 @@ def test(config):
 
 if __name__ == "__main__":
   init()
-  generate()
+  generate("Debug")
+  generate("Release")
   build("Debug")
   build("Release")
   test("Debug")
