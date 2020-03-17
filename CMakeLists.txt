@@ -14,11 +14,6 @@ project(
 # User options controlling what we build.
 option(HAPPY_ENABLE_PYTHON "Whether to build the happy CPython extension" ON)
 
-#== BUILD VARIABLES ==#
-
-# Path to the public include directory.
-set(HAPPY_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
-
 # Check whether CUDA is supported and if so enable the appropriate build settings.
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)

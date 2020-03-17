@@ -1,23 +1,13 @@
 cmake_minimum_required(VERSION 3.8)
 
-# Add the hello library CPU target
-add_library(happy_cpu_lib STATIC happy_cpu.cpp errors.hpp)
-target_include_directories(happy_cpu_lib PUBLIC "${HAPPY_INCLUDE_DIR}")
-target_compile_features(happy_cpu_lib PUBLIC cxx_std_14)
-set_target_properties(happy_cpu_lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
-# Add the happy library GPU target
-if(CMAKE_CUDA_COMPILER)
-  add_library(happy_gpu_lib STATIC happy_gpu.cu errors.hpp)
-  target_include_directories(happy_gpu_lib PUBLIC "${HAPPY_INCLUDE_DIR}")
-  target_compile_features(happy_gpu_lib PUBLIC cxx_std_14)
-  set_target_properties(happy_gpu_lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
+# List all implementation source files and header files.
+file(GLOB_RECURSE HAPPY_IMPL_HDRS CONFIGURE_DEPENDS "*.h" "*.hpp")
+set(HAPPY_IMPL_SRCS happy_cpu.cpp)
+if (CMAKE_CUDA_COMPILER)
+  list(APPEND ${HAPPY_IMPL_SRCS} happy_gpu.cu)
 endif()
 
-# For convience, build a library with both CPU and GPU targets.
-# TODO: Use generator syntax to optionally link to GPU target.
-add_library(happy_lib INTERFACE)
-target_link_libraries(happy_lib INTERFACE happy_cpu_lib)
-if(CMAKE_CUDA_COMPILER)
-  target_link_libraries(happy_lib INTERFACE happy_gpu_lib)
-endif()
+# Add and configure the hello library target.
+add_library(happy_lib OBJECT ${HAPPY_IMPL_HDRS} ${HAPPY_IMPL_SRCS})
+target_include_directories(happy_lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_compile_features(happy_lib PUBLIC cxx_std_14)
