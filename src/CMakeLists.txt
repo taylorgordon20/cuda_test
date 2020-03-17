@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 
 # Add the hello library CPU target
 add_library(happy_cpu_lib STATIC happy_cpu.cpp errors.hpp)
