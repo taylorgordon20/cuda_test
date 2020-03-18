@@ -5,8 +5,11 @@ file(GLOB_RECURSE HAPPY_IMPL_HDRS CONFIGURE_DEPENDS "*.h" "*.hpp")
 set(HAPPY_IMPL_SRCS happy_cpu.cpp)
 
 # Add CUDA implementation source files if language supported.
-if (CMAKE_CUDA_COMPILER)
-  list(APPEND ${HAPPY_IMPL_SRCS} happy_gpu.cu)
+if(CMAKE_CUDA_COMPILER)
+  set(HAPPY_IMPL_SRCS ${HAPPY_IMPL_SRCS} happy_gpu.cu)
+  message(STATUS ${HAPPY_IMPL_SRCS})
+else()
+  message("WTF? No CUDA!")
 endif()
 
 # Add and configure the hello library target.
